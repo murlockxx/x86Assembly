@@ -1,0 +1,125 @@
+    .intel_syntax noprefix
+
+    .section .data
+    num:
+    	.quad 9,8,3,7,5,6,4,1
+    .text
+    .global main
+    main:
+
+    push rbx #rbx for size
+    mov rbx,8
+
+
+    xor rcx,rcx
+    push r15 # for flag
+
+
+    xor r8,r8 # r8 for i in for
+    xor r10,r10 # r10 is j
+    xor r11,r11
+
+    firstFor:
+    	cmp r8,rbx
+    	je return
+    	mov r15,1
+    	xor r11,r11
+    	mov r9,rbx
+    	sub r9,r8
+    	dec r9
+    	innerFor:
+
+    		cmp r10,r9
+    		je x
+
+
+			mov rax,[num+r11]
+			mov rcx,[num+r11+8]
+    		cmp rax,rcx
+
+    		jg swap
+    		add r11,rbx
+    		inc r10
+    		jmp innerFor
+    	x:
+    		push r13
+    		mov r13,1
+    		cmp r15,r13
+    		je return
+    		inc r8
+    		mov r10,0
+    		jmp firstFor
+
+
+
+
+
+
+
+
+
+
+
+
+
+  swap:
+  	push r12
+  	mov r12,[num+r11+8]
+  	mov rcx,[num+r11]
+  	mov [num+r11],r12
+  	mov [num+r11+8],rcx
+  	mov r12,[num+r11]
+  	mov rcx,[num+r11+8]
+  	mov r15,0
+  	add r11,rbx
+    inc r10
+
+
+  	pop r12
+  	jmp innerFor
+
+
+
+
+
+return:
+	pop r12
+	pop r13
+	pop r15
+
+	xor rax,rax
+	xor rcx,rcx
+	xor r8,r8
+	xor r9,r9
+	mov r8,8
+
+	jmp print
+
+
+
+	print:
+		cmp r8,rax
+		je ex
+		mov rcx,[num+r9]
+		add r9,8
+		inc rax
+		jmp print
+
+
+
+
+
+ex:
+	 ret
+
+
+
+
+
+
+
+
+
+
+
+
