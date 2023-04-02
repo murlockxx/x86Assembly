@@ -1,0 +1,77 @@
+.intel_syntax noprefix
+
+
+.data
+
+arr:
+	.quad 12,11,13,5,6
+
+
+
+
+.text
+
+.global main
+
+
+main:
+	push r12
+	push rbx
+	mov r8,5  #size
+	mov r10,0 #j
+	mov r9,1  # i
+	xor rax,rax
+
+	for:
+		cmp r9,r8
+		je finish
+		mov rax,[arr+r9*8]
+		mov r10,r9
+		dec r10
+		while:
+			cmp r10,0
+			jl increment
+			cmp [arr+r10*8],rax
+			jle increment
+			mov r11,[arr+r10*8]
+			mov r12,r10
+			inc r12
+			imul r12,8
+			mov [arr+r12],r11
+			dec r10
+			jmp while
+
+
+
+	increment:
+		mov rbx,r10
+		inc rbx
+		imul rbx,8
+		mov [arr+rbx],rax
+		inc r9
+		jmp for
+
+
+finish:
+	pop r12
+	pop rbx
+	mov r8,0
+	mov r9,5
+
+	print:
+		cmp r8,r9
+		je fin
+		mov rax,[arr+r8*8]
+		inc r8
+		jmp print
+
+
+fin:
+	ret
+
+
+
+
+
+
+
